@@ -35,8 +35,39 @@ void destroy(struct list *des) {
 	free(des);
 }
 
+void add(struct list *add, int data) {
+    struct node *next = malloc(sizeof(struct node));
+    next->previous = add->last;
+    add->last->next = next;
+    next->next = NULL;
+    next->data = data;
+    add->last = next;
+    add->size++;
+}
 
-
+void supp(struct list *supp, int pos) {
+    struct node *tosupp = supp->first;
+    int b = 0;
+    while (b != pos) {
+        tosupp = tosupp->next;
+        b++;
+    }
+    struct node *pre = tosupp->previous;
+    struct node *aft = tosupp->next;
+    if(pre != NULL) {
+        pre->next = aft;
+    }
+    if (aft != NULL){
+        aft->previous = pre;
+    }
+    if (aft == NULL){
+        supp->last = pre;
+    }
+    if (pre == NULL){
+        supp->first = aft;
+    }
+    free(tosupp);
+}
 
 
 
@@ -44,5 +75,6 @@ void destroy(struct list *des) {
 
 int main(void)
 {
+    struct list *a = create();
 	return 0;
 }
