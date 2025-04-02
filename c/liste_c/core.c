@@ -22,11 +22,16 @@ struct list *create(void){
 }
 
 void destroy(struct list *des) {
-	if (des == NULL)
+	if (des == NULL) {
 		return;
-	while (des->first != NULL){
-		
-	}
+    }
+    struct node *first = des->first;
+    struct node *second = first;
+    while (first->next != NULL){
+        first = first->next;
+        free(second);
+        second=first;
+    }
 	free(des);
 }
 
