@@ -9,6 +9,7 @@ struct list {
 
 struct node {
 	int data;
+    int index;
 	struct node *next;
 	struct node *previous;
 };
@@ -37,7 +38,7 @@ void destroy(struct list *des) {
 	free(des);
 }
 
-void add(struct list *add, int data) {
+void add_to_end(struct list *add, int data) {
     struct node *next = malloc(sizeof(struct node));
     next->previous = add->last;
     if (add->last != NULL) {
@@ -45,6 +46,10 @@ void add(struct list *add, int data) {
     }
     if (add->first == NULL) {
         add->first = next;
+        next->index = 0;
+    }
+    else {
+        next->index = add->last->index + 1;
     }
     next->next = NULL;
     next->data = data;
@@ -76,11 +81,67 @@ void supp(struct list *supp, int pos) {
     free(tosupp);
 }
 
+int add_to_index(struct list *add, int pos, int data) {
+    struct node *scan = add->first;
+    struct node *new = malloc(sizeof(struct node));
+    new->index = pos;
+    new->data = data;
+    if (scan != NULL)
+    {
+        if(pos == 0){
+            new->next = add->first;
+            new->previous = NULL;
+            add->first->previous = new;
+            add->first = new;
+        }
+        else {
+            while (scan->index != pos-1) {
+                if (scan->next == NULL) {
+                    free(new);
+                    return 1;
+                }
+                scan = scan->next;
+            }
+            new->next = scan->next;
+            new->previous = scan;
+            scan->next = new;
+            new->next->previous = new;
+        }
+        scan = new->next;
+        while (scan != NULL) {
+            scan->index++;
+            scan = scan->next;
+        }
+    }
+    else {
+        if (pos != 0) {
+            free(new);
+            return 1;
+        }
+        add_to_end(add,data);
+        return 0;
+    }
+}
+
+void print_list(struct list *p) {
+    struct node *a = p->first;
+    while( a != NULL) {
+        printf("%d : %d\n", a->index, a->data);
+        a = a->next;
+    }
+}
 
 
 
 
 int main(void)
 {
+    struct list *a = create();
+    add_to_index(a, 0, 3);
+    add_to_index(a, 0, 1);
+    add_to_index(a, 1, 2);
+    add_to_end(a, 4);
+    print_list(a);
+    destroy(a);
 	return 0;
 }
