@@ -19,4 +19,33 @@ int Hauteur(struct node *R){
     return G+1;
 }
 
+int Profondeur_d_un_noeud(struct node *R, struct node *C) {
+    
+}
 
+void Parc_Prof_Rec(struct node *R) {
+    if (R == NULL) { return; }
+    printf("Prefix = %d\n", R->num);
+    Parc_Prof_Rec(R->fg);
+    printf("Infix = %d\n", R->num);
+    Parc_Prof_Rec(R->fd);
+    printf("Suffix = %d\n", R->num);
+}
+
+void Parc_Prof_Iter(struct node *R) {
+    stack *S = stack();
+    struct node *a;
+    if (R != NULL) {
+        S.push(R);
+        while (S.isempty != 0) {
+            a = S.pop()
+            printf("Prefixe = %d\n", a->num);
+            if (a->fd != NULL) {
+                S.push a->fd;
+            }
+            if (a->fg != NULL) {
+                S.push a->fg;
+            }
+        }
+    }
+}
