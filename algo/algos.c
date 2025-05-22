@@ -36,15 +36,15 @@ void Parc_Prof_Iter(struct node *R) {
     stack *S = stack();
     struct node *a;
     if (R != NULL) {
-        S.push(R);
+        S = Push(S, R);
         while (S.isempty != 0) {
-            a = S.pop()
+            a = Pop(S);
             printf("Prefixe = %d\n", a->num);
             if (a->fd != NULL) {
-                S.push a->fd;
+                S = Push(S, a->fd);
             }
             if (a->fg != NULL) {
-                S.push a->fg;
+                S = Push(S, a->fg);
             }
         }
     }
